@@ -33,6 +33,7 @@
   "dependencies": {
     "@floating-ui/dom": "1.5.4",
     "@sveltejs/adapter-static": "^3.0.1",
+    "@sveltejs/adapter-vercel": "^4.0.4",
     "minidenticons": "^4.2.0",
     "svelte-katex": "^0.1.2",
     "svelte-legos": "^0.2.2"
