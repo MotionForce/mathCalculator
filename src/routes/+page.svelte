@@ -3,6 +3,7 @@
   import ParamSelector from "$lib/components/paramSelector.svelte";
   import { storage } from "svelte-legos";
   import { writable } from "svelte/store";
+  import Plot from "$lib/components/plot.svelte";
 
   let precision = storage(writable(5), "precision");
 
@@ -10,12 +11,17 @@
   let h = storage(writable(0), "h");
   let k = storage(writable(0), "k");
 
-  let forme = storage(writable<"canonique" | "generale">("canonique"), "forme");
+  let forme = storage(
+    writable<"canonique" | "generale" | "factorisee">("canonique"),
+    "forme",
+  );
+
+  let num_type = false;
 
   $: precision_ = $precision < 1 || $precision > 10 ? 5 : $precision;
-  $: r_a = parseFloat($a.toPrecision(precision_));
-  $: r_h = parseFloat($h.toPrecision(precision_));
-  $: r_k = parseFloat($k.toPrecision(precision_));
+  $: r_a = $a === null ? 1 : parseFloat($a.toPrecision(precision_));
+  $: r_h = $h === null ? 1 : parseFloat($h.toPrecision(precision_));
+  $: r_k = $k === null ? 1 : parseFloat($k.toPrecision(precision_));
   $: sol_1 =
     $a !== 0
       ? parseFloat(($h - Math.sqrt(-$k / $a)).toPrecision(precision_))
@@ -39,8 +45,9 @@
       bind:h={$h}
       bind:k={$k}
       bind:forme={$forme}
+      bind:num_type
     />
-    {#if typeof $a === "number" && typeof $h === "number" && typeof $k === "number"}
+    {#if num_type}
       {#if $a !== 0}
         <hr />
         <h2 class="h2">Les propriétés</h2>
@@ -196,11 +203,22 @@
             </tbody>
           </table>
         </div>
+        {#key $a}
+          {#key $h}
+            {#key $k}
+              {#if num_type}
+                {#if $a !== 0}
+                  <Plot a={$a} h={$h} k={$k} />
+                {/if}
+              {/if}
+            {/key}
+          {/key}
+        {/key}
       {/if}
     {:else}
       <h4 class="h4">
-        S'il vous plaît inscrivez les valeurs des paramètres a, h et k au
-        dessus.
+        S'il vous plaît inscrivez les valeurs numériques pour les paramètres
+        ci-dessus.
       </h4>
     {/if}
   </div>
