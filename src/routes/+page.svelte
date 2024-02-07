@@ -4,8 +4,6 @@
   import { storage } from "svelte-legos";
   import { writable } from "svelte/store";
   import Plot from "$lib/components/plot.svelte";
-  import { LightSwitch } from '@skeletonlabs/skeleton';
-
   let precision = storage(writable(5), "precision");
 
   let a = storage(writable(1), "a");
@@ -42,7 +40,6 @@
         Calculatrice de propriété de fonction quadratique
       </h1>
     </a>
-    <LightSwitch/>
   </div>
   <div class="p-7 flex flex-col space-y-5 bg-surface-500-400-token rounded-2xl">
     <ParamSelector
