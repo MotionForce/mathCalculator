@@ -34,13 +34,9 @@
 <div
   class="lg:m-10 p-4 md:p-10 flex flex-col space-y-10 bg-surface-300-600-token lg:rounded-3xl"
 >
-  <div class="flex flex-row">
-    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-      <h1 class="h1 font-bold">
-        Calculatrice de propriété de fonction quadratique
-      </h1>
-    </a>
-  </div>
+    <h1 class="h1 font-bold">
+      Calculatrice de propriété de fonction quadratique
+    </h1>
   <div class="p-7 flex flex-col space-y-5 bg-surface-500-400-token rounded-2xl">
     <ParamSelector
       bind:precision={precision_}
