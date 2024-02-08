@@ -5,7 +5,6 @@
   import { storage } from "svelte-legos";
   import { writable } from "svelte/store";
   import Plot from "$lib/components/plot.svelte";
-<<<<<<< HEAD
   import { evaluate } from "mathjs";
   import {
     croissance,
@@ -22,13 +21,6 @@
   let a = storage(writable<string>("1"), "a");
   let h = storage(writable<string>("0"), "h");
   let k = storage(writable<string>("0"), "k");
-=======
-  let precision = storage(writable(5), "precision");
-
-  let a = storage(writable(1), "a");
-  let h = storage(writable(0), "h");
-  let k = storage(writable(0), "k");
->>>>>>> 24abd33fa0d50285e1846e2d4d09086024f46aba
 
   let forme = storage(
     writable<"canonique" | "generale" | "factorisee">("canonique"),
