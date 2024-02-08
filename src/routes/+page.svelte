@@ -74,6 +74,7 @@
       {#if n_a !== 0}
         <hr />
         <h2 class="h2">Les propriétés</h2>
+        <p>Certaines erreurs peuvent survenir dans le calcul des décimales.</p>
         <div class="table-container">
           <table class="table table-hover">
             <thead>
