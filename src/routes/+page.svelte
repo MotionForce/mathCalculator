@@ -5,6 +5,7 @@
   import { storage } from "svelte-legos";
   import { writable } from "svelte/store";
   import Plot from "$lib/components/plot.svelte";
+<<<<<<< HEAD
   import { evaluate } from "mathjs";
   import {
     croissance,
@@ -21,6 +22,13 @@
   let a = storage(writable<string>("1"), "a");
   let h = storage(writable<string>("0"), "h");
   let k = storage(writable<string>("0"), "k");
+=======
+  let precision = storage(writable(5), "precision");
+
+  let a = storage(writable(1), "a");
+  let h = storage(writable(0), "h");
+  let k = storage(writable(0), "k");
+>>>>>>> 24abd33fa0d50285e1846e2d4d09086024f46aba
 
   let forme = storage(
     writable<"canonique" | "generale" | "factorisee">("canonique"),
@@ -56,9 +64,9 @@
 <div
   class="lg:m-10 p-4 md:p-10 flex flex-col space-y-10 bg-surface-300-600-token lg:rounded-3xl"
 >
-  <h1 class="h1 font-bold">
-    Calculatrice de propriété de fonction quadratique
-  </h1>
+    <h1 class="h1 font-bold">
+      Calculatrice de propriété de fonction quadratique
+    </h1>
   <div class="p-7 flex flex-col space-y-5 bg-surface-500-400-token rounded-2xl">
     <ParamSelector
       bind:s_a={$a}
