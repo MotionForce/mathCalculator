@@ -196,7 +196,7 @@
     <Katex
       >f(x)={format_decimal(a)}x^2{b > 0 ? "+" : ""}{format_decimal(b)}x{c > 0
         ? "+"
-        : ""}+{format_decimal(c)}</Katex
+        : ""}{format_decimal(c)}</Katex
     >
   {/if}
 {:else}
