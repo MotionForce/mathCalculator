@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { compile, range } from "mathjs";
+  import { compile, range, type Fraction, fraction } from "mathjs";
   import { onMount } from "svelte";
+  // @ts-expect-error
   import Plot from "svelte-plotly.js";
 
   onMount(() => {
@@ -31,9 +32,9 @@
     }
   }
 
-  export let a = 1;
-  export let h = 0;
-  export let k = 0;
+  export let a: Fraction = fraction(1);
+  export let h: Fraction = fraction(0);
+  export let k: Fraction = fraction(0);
 
   var data: any[] = [];
 </script>

@@ -33,6 +33,7 @@
   "type": "module",
   "dependencies": {
     "@floating-ui/dom": "1.5.4",
+    "assert": "^2.1.0",
     "mathjs": "^12.3.0",
     "plotly.js": "2.28.0",
     "svelte-katex": "^0.1.2",

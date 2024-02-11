@@ -3,9 +3,18 @@
   import Katex from "svelte-katex";
   import ParamSelector from "$lib/components/paramSelector.svelte";
   import { storage } from "svelte-legos";
-  import { writable } from "svelte/store";
+  import { writable, type Stores, type Writable } from "svelte/store";
   import Plot from "$lib/components/plot.svelte";
-  import { evaluate } from "mathjs";
+  import {
+    evaluate,
+    unequal,
+    type Fraction,
+    fraction,
+    larger,
+    equal,
+    typeOf,
+    string,
+  } from "mathjs";
   import {
     croissance,
     decroissance,
@@ -13,160 +22,190 @@
     image,
     valeur_initiale,
     zeros,
-    format_decimal,
     signe_positif,
     signe_negatif,
   } from "$lib/properties";
+  import { calc_sols, format_decimal } from "$lib/utilities";
+  import { dev } from "$app/environment";
 
-  let a = storage(writable<string>("1"), "a");
-  let h = storage(writable<string>("0"), "h");
-  let k = storage(writable<string>("0"), "k");
-
-  let forme = storage(
+  const string_a = storage(writable<string>("1"), "a");
+  const string_h = storage(writable<string>("0"), "h");
+  const string_k = storage(writable<string>("0"), "k");
+  const forme = storage(
     writable<"canonique" | "generale" | "factorisee">("canonique"),
     "forme",
   );
 
-  let num_type = false;
-
-  let n_a: number = 1.0;
-  let n_h: number = 0.0;
-  let n_k: number = 0.0;
+  let a: Fraction | null;
+  let h: Fraction | null;
+  let k: Fraction | null;
 
   try {
-    n_a = $a !== null ? parseFloat(evaluate($a.toString())) : 1.0;
-    n_h = $h !== null ? parseFloat(evaluate($h.toString())) : 0.0;
-    n_k = $k !== null ? parseFloat(evaluate($k.toString())) : 0.0;
-  } catch (e) {
-    n_a = 1.0;
-    n_h = 0.0;
-    n_k = 0.0;
-    console.log(e);
+    a = fraction($string_a);
+  } catch (error) {
+    console.warn(error);
+    a = fraction(1);
+  }
+  try {
+    h = fraction($string_h);
+  } catch (error) {
+    console.warn(error);
+    h = fraction(0);
+  }
+  try {
+    k = fraction($string_k);
+  } catch (error) {
+    console.warn(error);
+    k = fraction(0);
   }
 
-  console.log(JSON.stringify({ a, h, k, n_a, n_h, n_k }, null, 2));
-
-  $: sol_1 = n_a !== 0 ? n_h - Math.sqrt(-n_k / n_a) : null;
-  $: sol_2 = n_a !== 0 ? n_h + Math.sqrt(-n_k / n_a) : null;
+  $: sols = calc_sols(a, h, k);
+  $: try {
+    a = fraction($string_a);
+  } catch (error) {
+    console.warn(error);
+    a = null;
+  }
+  $: try {
+    h = fraction($string_h);
+  } catch (error) {
+    console.warn(error);
+    h = null;
+  }
+  $: try {
+    k = fraction($string_k);
+  } catch (error) {
+    console.warn(error);
+    k = null;
+  }
+  $: num_type =
+    typeOf(a) === "Fraction" &&
+    typeOf(h) === "Fraction" &&
+    typeOf(k) === "Fraction" &&
+    a !== null &&
+    h !== null &&
+    k !== null;
 </script>
 
-<!-- {`$a: ${$a} ${typeof $a}, $h: ${$h} ${typeof $h}, $k: ${$k} ${typeof $k}`}
-<br />
-{`a: ${n_a} ${typeof n_a}, h: ${n_h} ${typeof n_h}, k: ${n_k} ${typeof n_k}`} -->
+{#if dev}
+  {`$a: ${string_a} ${typeof string_a}, $h: ${string_h} ${typeof string_h}, $k: ${string_k} ${typeof string_k}`}
+  <br />
+  {`$a: ${a} ${typeof a}, $h: ${h} ${typeof h}, $k: ${k} ${typeof k}`}
+  <br />
+  {`sol_1: ${sols[0]} ${typeof sols[0]}, sol_2: ${sols[1]} ${typeof sols[1]}`}
+  <br />
+  {`forme: ${$forme} ${typeof $forme}`}
+{/if}
 <div
   class="lg:m-10 p-4 md:p-10 flex flex-col space-y-10 bg-surface-300-600-token lg:rounded-3xl"
 >
-    <h1 class="h1 font-bold">
-      Calculatrice de propriété de fonction quadratique
-    </h1>
+  <h1 class="h1 font-bold">
+    Calculatrice de propriété de fonction quadratique
+  </h1>
   <div class="p-7 flex flex-col space-y-5 bg-surface-500-400-token rounded-2xl">
     <ParamSelector
-      bind:s_a={$a}
-      bind:s_h={$h}
-      bind:s_k={$k}
-      bind:a={n_a}
-      bind:h={n_h}
-      bind:k={n_k}
-      bind:forme={$forme}
-      bind:num_type
+      bind:a={$string_a}
+      bind:h={$string_h}
+      bind:k={$string_k}
     />
-    {#if num_type}
-      {#if n_a !== 0}
-        <hr />
-        <h2 class="h2">Les propriétés</h2>
-        <p>Certaines erreurs peuvent survenir lors des calculs des décimales.</p>
-        <div class="table-container">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th class="w-fit min-w-56">Propriété</th>
-                <th class="w-full">Valeur</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>Domaine</th>
-                <td>
-                  <Katex>{domain()}</Katex>
-                </td>
-              </tr>
-              <tr>
-                <th>Image</th>
-                <td>
-                  <Katex>{image(n_a, n_k)}</Katex>
-                </td>
-              </tr>
-              <tr>
-                <th>Valeur initiale</th>
-                <td>
-                  <Katex>{valeur_initiale(n_a, n_h, n_k)}</Katex>
-                </td>
-              </tr>
-              <tr>
-                <th>Zéros</th>
-                <td>
-                  <Katex>{zeros(n_a, n_h, n_k, sol_1, sol_2)}</Katex>
-                </td>
-              </tr>
-              <tr>
-                <th>Croissance</th>
-                <td>
-                  <Katex>{croissance(n_a, n_h)}</Katex>
-                </td>
-              </tr>
-              <tr>
-                <th>Décroissance</th>
-                <td>
-                  <Katex>{decroissance(n_a, n_h)}</Katex>
-                </td>
-              </tr>
-              <tr>
-                <th>Maximum</th>
-                <td>
-                  {#if n_a > 0}
-                    <p class="text-lg">aucun</p>
-                  {:else}
-                    <Katex>{format_decimal(n_k)}</Katex>
-                  {/if}
-                </td>
-              </tr>
-              <tr>
-                <th>Minimum</th>
-                <td>
-                  {#if n_a > 0}
-                    <Katex>{format_decimal(n_k)}</Katex>
-                  {:else}
-                    <p class="text-lg">aucun</p>
-                  {/if}
-                </td>
-              </tr>
-              <tr>
-                <th>Signe positif</th>
-                <td>
-                  <Katex>{signe_positif(n_a, n_h, n_k, sol_1, sol_2)}</Katex>
-                </td>
-              </tr>
-              <tr>
-                <th>Signe négatif</th>
-                <td>
-                  <Katex>{signe_negatif(n_a, n_h, n_k, sol_1, sol_2)}</Katex>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        {#key n_a}
-          {#key n_h}
-            {#key n_k}
-              {#if num_type}
-                {#if n_a !== 0}
-                  <Plot a={n_a} h={n_h} k={n_k} />
-                {/if}
-              {/if}
+    {#if num_type && a !== null && h !== null && k !== null && unequal(a, 0)}
+      <hr />
+      <h2 class="h2">Les propriétés</h2>
+      <div class="table-container">
+        {#key a}
+          {#key h}
+            {#key k}
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th class="w-fit min-w-56">Propriété</th>
+                    <th class="w-full">Valeur</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Domaine</th>
+                    <td>
+                      <Katex>{domain()}</Katex>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Image</th>
+                    <td>
+                      <Katex>{image(a, k)}</Katex>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Valeur initiale</th>
+                    <td>
+                      <Katex>{valeur_initiale(a, h, k)}</Katex>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Zéros</th>
+                    <td>
+                      <Katex>{zeros(a, h, k, sols)}</Katex>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Croissance</th>
+                    <td>
+                      <Katex>{croissance(a, h)}</Katex>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Décroissance</th>
+                    <td>
+                      <Katex>{decroissance(a, h)}</Katex>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Maximum</th>
+                    <td>
+                      {#if larger(a, 0)}
+                        <p class="text-lg">aucun</p>
+                      {:else}
+                        <Katex>{format_decimal(k)}</Katex>
+                      {/if}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Minimum</th>
+                    <td>
+                      {#if larger(a, 0)}
+                        <Katex>{format_decimal(k)}</Katex>
+                      {:else}
+                        <p class="text-lg">aucun</p>
+                      {/if}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Signe positif</th>
+                    <td>
+                      <Katex>{signe_positif(a, h, k, sols)}</Katex>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Signe négatif</th>
+                    <td>
+                      <Katex>{signe_negatif(a, h, k, sols)}</Katex>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             {/key}
           {/key}
         {/key}
-      {/if}
+      </div>
+      {#key a}
+        {#key h}
+          {#key k}
+            {#if num_type && unequal(a, 0)}
+              <Plot {a} {h} {k} />
+            {/if}
+          {/key}
+        {/key}
+      {/key}
     {:else}
       <h4 class="h4">
         S'il vous plaît inscrivez les valeurs numériques pour les paramètres
