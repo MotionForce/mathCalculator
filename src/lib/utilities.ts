@@ -1,4 +1,13 @@
-import { isFraction, type Fraction, multiply, add, sqrt, subtract, pow, divide, bignumber, fraction, typeOf } from "mathjs";
+import {
+    isFraction,
+    type Fraction,
+    multiply,
+    add,
+    subtract,
+    pow,
+    divide,
+    typeOf
+} from "mathjs";
 
 export function format_decimal(x: number | null | Fraction): string {
     if (x === null) {
@@ -6,12 +15,12 @@ export function format_decimal(x: number | null | Fraction): string {
     }
     if (isFraction(x)) {
         if (x.n === x.d) {
-            return String.raw`${x.n}`;
+            return String.raw`1`;
         }
         if (x.d === 1) {
             return String.raw`${x.n}`;
         }
-        return String.raw`\frac{${x.n}}{${x.d}}`;
+        return String.raw`\frac{${x.s === 1 ? "" : "-"}${x.n}}{${x.d}}`;
     }
     let w_x: string | undefined;
     let d_x: string | undefined;
@@ -32,9 +41,10 @@ export function calc_sols(a: Fraction | null, h: Fraction | null, k: Fraction | 
     if (a === null || h === null || k === null || typeOf(a) !== "Fraction" || typeOf(h) !== "Fraction" || typeOf(k) !== "Fraction") {
         return [null, null];
     }
-    let root = divide(multiply(-1, k), a);
-    let x1 = add(h, root);
-    let x2 = subtract(h, root);
+    let root = divide(pow(subtract(pow(multiply(-2, multiply(a, h)), 2), multiply(multiply(4, a), add(multiply(a, pow(h, 2)), k))), 1 / 2), multiply(2, a));
+
+    let x1 = subtract(h, root);
+    let x2 = add(h, root);
     // @ts-expect-error
     return [x1, x2];
 }
