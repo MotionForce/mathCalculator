@@ -25,7 +25,7 @@ export function image(a: Fraction, k: Fraction) {
 }
 
 export function valeur_initiale(a: Fraction, h: Fraction, k: Fraction) {
-  return String.raw`f(0)=${format_decimal(fraction(evaluate(`(-${h}) ^ 2 * ${a} + ${k}`)))}`;
+  return String.raw`f(0)=${format_decimal(fraction(evaluate(`${h} ^ 2 * ${a} + ${k}`)))}`;
 }
 
 export function zeros(a: Fraction, h: Fraction, k: Fraction, sols: [Fraction | null, Fraction | null]) {

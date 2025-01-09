@@ -1,2 +1,2 @@
-To deploy, add git repo to vercel and deploy from there.
-To test locally, install NodeJS 18. Then run `pnpm install`, `pnpm run build`, then `pnpm run preview` in any terminal.
+To deploy, add git repo to Vercel and deploy from there.
+To test locally, install NodeJS 20 and npm. Then run `npm install`, `npm run build`, then `npm run preview` in any terminal.
