@@ -5,7 +5,7 @@ import typography from '@tailwindcss/typography';
 
 export default {
 	darkMode: 'class',
-	content: ['./src/**/*.{html,js,svelte,ts}', join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')],
+	content: ['./src/**/*.{html,js,svelte,ts}', join('../**/*.{html,js,svelte,ts}')],
 	theme: {
 		extend: {},
 	},
