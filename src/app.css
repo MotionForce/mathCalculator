@@ -1,9 +1,7 @@
 @import 'tailwindcss';
 @import "@skeletonlabs/skeleton";
 
-/*
-  Add your theme import for your theme: "hackathonTheme" here
-*/
+@import './hackathonTheme';
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
@@ -16,9 +14,7 @@
 
 @source '../../**/*.{html,js,svelte,ts}';
 
-@source '../node_modules/@skeletonlabs/skeleton/dist/**/*.{html,js,svelte,ts}';
-
-@source '../node_modules/@skeletonlabs/skeleton/dist/**/*.{html,js,svelte,ts}';
+@import '@skeletonlabs/skeleton-svelte';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -35,6 +31,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -53,6 +50,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -71,6 +69,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -82,9 +81,8 @@
 
 
 @font-face {
-	/* Reference name */
-	font-family: 'Dosis';
-	/* For multiple files use commas, ex: url(), url(), ... */
-	src: url('/fonts/Dosis-VariableFont_wght.ttf');
+  /* Reference name */
+  font-family: 'Dosis';
+  /* For multiple files use commas, ex: url(), url(), ... */
+  src: url('/fonts/Dosis-VariableFont_wght.ttf');
 }
-							
