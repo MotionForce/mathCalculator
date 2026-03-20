@@ -32,11 +32,15 @@
     }
   }
 
-  export let a: Fraction = fraction(1);
-  export let h: Fraction = fraction(0);
-  export let k: Fraction = fraction(0);
+  interface Props {
+    a?: Fraction;
+    h?: Fraction;
+    k?: Fraction;
+  }
 
-  var data: any[] = [];
+  let { a = fraction(1), h = fraction(0), k = fraction(0) }: Props = $props();
+
+  var data: any[] = $state([]);
 </script>
 
 <Plot

@@ -64,16 +64,25 @@
         }
     }
 
-    export let forme: "canonique" | "generale" | "factorisee" = "canonique";
 
-    export let a: string = "1";
-    export let h: string = "0";
-    export let k: string = "0";
+    interface Props {
+        forme?: "canonique" | "generale" | "factorisee";
+        a?: string;
+        h?: string;
+        k?: string;
+    }
 
-    let b: string = "0";
-    let c: string = "0";
-    let x1: string = "0";
-    let x2: string = "0";
+    let {
+        forme = $bindable("canonique"),
+        a = $bindable("1"),
+        h = $bindable("0"),
+        k = $bindable("0")
+    }: Props = $props();
+
+    let b: string = $state("0");
+    let c: string = $state("0");
+    let x1: string = $state("0");
+    let x2: string = $state("0");
 
     const formes_vars = {
         canonique: {
@@ -98,7 +107,7 @@
     <br/>
     {`forme: ${forme} ${typeof forme}`}
 {/if}
-<select class="select" bind:value={forme} on:focus={(e) => update_forme(e)}>
+<select class="select" bind:value={forme} onfocus={(e) => update_forme(e)}>
     <option value="canonique">Forme canonique</option>
     <option value="generale">Forme générale</option>
     <option value="factorisee">Forme factorisée</option>
@@ -144,7 +153,7 @@
 </div>
 <button
         class="button variant-filled rounded-2xl w-fit h-fit px-5 py-3"
-        on:click={(e) => update_forme(e, true)}>Calculer
+        onclick={(e) => update_forme(e, true)}>Calculer
 </button
 >
 

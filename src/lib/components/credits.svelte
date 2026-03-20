@@ -3,7 +3,11 @@
 
     import {getModalStore} from '@skeletonlabs/skeleton';
 
-    export let parent: SvelteComponent;
+    interface Props {
+        parent: SvelteComponent;
+    }
+
+    let { parent }: Props = $props();
 
     const modalStore = getModalStore();
 
@@ -38,7 +42,7 @@
         </ul>
         <footer class="modal-footer {parent.regionFooter}">
             <button class="btn {parent.buttonPositive}"
-                    on:click={() => {modalStore.close();}}>Fermer</button>
+                    onclick={() => {modalStore.close();}}>Fermer</button>
         </footer>
     </div>
 {/if}

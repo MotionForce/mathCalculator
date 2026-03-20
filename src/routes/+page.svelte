@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { run } from 'svelte/legacy';
+
     // @ts-expect-error
     import Katex from "svelte-katex";
     import ParamSelector from "$lib/components/paramSelector.svelte";
@@ -30,9 +32,9 @@
     const string_k = writable<string>("0");
     const forme = writable<"canonique" | "generale" | "factorisee">("canonique");
 
-    let a: Fraction | null;
-    let h: Fraction | null;
-    let k: Fraction | null;
+    let a: Fraction | null = $state();
+    let h: Fraction | null = $state();
+    let k: Fraction | null = $state();
 
     try {
         a = fraction($string_a);
@@ -53,32 +55,38 @@
         k = fraction(0);
     }
 
-    $: sols = calc_sols(a, h, k);
-    $: try {
-        a = fraction($string_a);
-    } catch (error) {
-        console.warn(error);
-        a = null;
-    }
-    $: try {
-        h = fraction($string_h);
-    } catch (error) {
-        console.warn(error);
-        h = null;
-    }
-    $: try {
-        k = fraction($string_k);
-    } catch (error) {
-        console.warn(error);
-        k = null;
-    }
-    $: num_type =
-        typeOf(a) === "Fraction" &&
+    let sols = $derived(calc_sols(a, h, k));
+    run(() => {
+        try {
+            a = fraction($string_a);
+        } catch (error) {
+            console.warn(error);
+            a = null;
+        }
+    });
+    run(() => {
+        try {
+            h = fraction($string_h);
+        } catch (error) {
+            console.warn(error);
+            h = null;
+        }
+    });
+    run(() => {
+        try {
+            k = fraction($string_k);
+        } catch (error) {
+            console.warn(error);
+            k = null;
+        }
+    });
+    let num_type =
+        $derived(typeOf(a) === "Fraction" &&
         typeOf(h) === "Fraction" &&
         typeOf(k) === "Fraction" &&
         a !== null &&
         h !== null &&
-        k !== null;
+        k !== null);
 </script>
 
 {#if dev}

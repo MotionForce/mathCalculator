@@ -3,6 +3,11 @@
     import {Modal, getModalStore, initializeStores} from '@skeletonlabs/skeleton';
     import type {ModalSettings} from '@skeletonlabs/skeleton';
     import Credits from "$lib/components/credits.svelte";
+    interface Props {
+        children?: import('svelte').Snippet;
+    }
+
+    let { children }: Props = $props();
 
     const creditsModal: ModalSettings = {
         type: 'component',
@@ -20,12 +25,12 @@
 </script>
 
 <Modal/>
-<slot/>
+{@render children?.()}
 
 <footer>
     <p>Site-web créé par Andrey Kovalskiy. Pour tout problème contactez moi à l'adresse
         <i>andrey.kovalskiy@outlook.com</i>.
-        <button on:click={openCreditsModal}>
+        <button onclick={openCreditsModal}>
             <u>Crédits</u>
         </button>.
         <a href="https://github.com/MotionForce/mathCalculator">
