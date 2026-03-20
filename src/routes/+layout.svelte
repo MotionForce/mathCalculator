@@ -1,18 +1,22 @@
 <script lang="ts">
-    import "../app.postcss";
-    import {Modal, getModalStore, initializeStores} from '@skeletonlabs/skeleton';
-    import type {ModalSettings} from '@skeletonlabs/skeleton';
+    import "../app.css";
+    import {
+        Modal,
+        getModalStore,
+        initializeStores,
+    } from "@skeletonlabs/skeleton";
+    import type { ModalSettings } from "@skeletonlabs/skeleton";
     import Credits from "$lib/components/credits.svelte";
     interface Props {
-        children?: import('svelte').Snippet;
+        children?: import("svelte").Snippet;
     }
 
     let { children }: Props = $props();
 
     const creditsModal: ModalSettings = {
-        type: 'component',
-        component: {ref: Credits},
-        title: 'Bibliothèques et librairies utilisées'
+        type: "component",
+        component: { ref: Credits },
+        title: "Bibliothèques et librairies utilisées",
     };
 
     initializeStores();
@@ -24,11 +28,13 @@
     }
 </script>
 
-<Modal/>
+<Modal />
 {@render children?.()}
 
 <footer>
-    <p>Site-web créé par Andrey Kovalskiy. Pour tout problème contactez moi à l'adresse
+    <p>
+        Site-web créé par Andrey Kovalskiy. Pour tout problème contactez moi à
+        l'adresse
         <i>andrey.kovalskiy@outlook.com</i>.
         <button onclick={openCreditsModal}>
             <u>Crédits</u>
