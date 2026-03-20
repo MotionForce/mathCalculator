@@ -50,5 +50,5 @@
   }}
   fillParent="width"
   debounce={250}
-  class="rounded-2xl bg-surface-500-400-token"
+  class="rounded-2xl bg-surface-600-400"
 />

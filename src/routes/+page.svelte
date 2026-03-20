@@ -99,12 +99,12 @@
     {`forme: ${$forme} ${typeof $forme}`}
 {/if}
 <div
-        class="lg:m-10 p-4 md:p-10 flex flex-col space-y-10 bg-surface-300-600-token lg:rounded-3xl"
+        class="lg:m-10 p-4 md:p-10 flex flex-col space-y-10 bg-surface-300-700 lg:rounded-3xl"
 >
     <h1 class="h1 font-bold">
         Calculatrice de propriétés de fonction quadratique
     </h1>
-    <div class="p-7 flex flex-col space-y-5 bg-surface-500-400-token rounded-2xl">
+    <div class="p-7 flex flex-col space-y-5 bg-surface-600-400 rounded-2xl">
         <h4 class="h4">S'il-vous-plait utiliser des points à la place des virgules.</h4>
         <ParamSelector
                 bind:a={$string_a}
@@ -120,7 +120,7 @@
                     {#key a}
                         {#key h}
                             {#key k}
-                                <table class="table table-hover">
+                                <table class="table ">
                                     <thead>
                                     <tr>
                                         <th class="w-fit min-w-56">Propriété</th>

@@ -152,7 +152,7 @@
     {/if}
 </div>
 <button
-        class="button variant-filled rounded-2xl w-fit h-fit px-5 py-3"
+        class="button preset-filled rounded-2xl w-fit h-fit px-5 py-3"
         onclick={(e) => update_forme(e, true)}>Calculer
 </button
 >

@@ -1,11 +1,6 @@
 <script lang="ts">
     import "../app.css";
-    import {
-        Modal,
-        getModalStore,
-        initializeStores,
-    } from "@skeletonlabs/skeleton";
-    import type { ModalSettings } from "@skeletonlabs/skeleton";
+    import type { ModalSettings } from "@skeletonlabs/skeleton-svelte";
     import Credits from "$lib/components/credits.svelte";
     interface Props {
         children?: import("svelte").Snippet;

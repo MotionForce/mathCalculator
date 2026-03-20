@@ -1,8 +1,6 @@
 <script lang="ts">
     import type {SvelteComponent} from 'svelte';
 
-    import {getModalStore} from '@skeletonlabs/skeleton';
-
     interface Props {
         parent: SvelteComponent;
     }
